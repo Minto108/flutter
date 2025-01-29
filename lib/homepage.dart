@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'notifications.dart';
-import 'alerts.dart'; // Import the alerts page
+import 'alerts.dart';
+import 'active_users.dart'; // Add this import
+import 'past_users.dart';
 
 class ParkItHomePage extends StatefulWidget {
   const ParkItHomePage({super.key});
@@ -70,17 +72,19 @@ class _ParkItHomePageState extends State<ParkItHomePage> {
                 });
                 showNotification("Welcome to ParkIt", "New User added successfully.");
               } else if (value == "2") {
-                setState(() {
-                  _notifications.add({
-                    "title": "Active Users",
-                    "body": "Here are your active users.",
-                  });
-                });
-                showNotification("Active Users", "Here are your active users.");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ActiveUsersPage()),
+                ); // Navigate to Active Users Page
               } else if (value == "3") {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const AlertPage()),
+                );
+              } else if (value == "4") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PastUsersPage()),
                 );
               }
             },
@@ -88,63 +92,63 @@ class _ParkItHomePageState extends State<ParkItHomePage> {
               const PopupMenuItem(value: "1", child: Text("New User")),
               const PopupMenuItem(value: "2", child: Text("Active Users")),
               const PopupMenuItem(value: "3", child: Text("Alerts")),
+              const PopupMenuItem(value: "4", child: Text("Past Users")),
             ],
           ),
         ],
       ),
       body: Container(
-  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-  decoration: BoxDecoration(
-    image: DecorationImage(
-      image: AssetImage(_images[_currentImageIndex]), // Background image
-      fit: BoxFit.cover,
-    ),
-  ),
-  child: Column(
-    mainAxisAlignment: MainAxisAlignment.start, // Align content at the top
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-      Container(
-        margin: const EdgeInsets.only(top: 20),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.8), // Reduce opacity of the white box
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 10,
-              offset: Offset(0, 4),
+          image: DecorationImage(
+            image: AssetImage(_images[_currentImageIndex]),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: const Text(
+                'ParkIt',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepPurple,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Welcome to ParkIt...\nYour parking companion.',
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.white,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: Container(),
             ),
           ],
         ),
-        child: const Text(
-          'ParkIt',
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            color: Colors.deepPurple,
-          ),
-          textAlign: TextAlign.center,
-        ),
       ),
-      const SizedBox(height: 20),
-      const Text(
-        'Welcome to ParkIt...\nYour parking companion.',
-        style: TextStyle(
-          fontSize: 18,
-          color: Colors.white, // Ensures text is visible on the image
-        ),
-        textAlign: TextAlign.center,
-      ),
-      const SizedBox(height: 20),
-      Expanded(
-        child: Container(), // Placeholder to balance layout, if needed
-      ),
-    ],
-  ),
-),
-
     );
   }
 }
