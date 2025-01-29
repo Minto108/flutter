@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'homepage.dart';
+// Add this import
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Required to ensure Flutter initializes correctly.
-  await initializeNotifications(); // Set up local notifications.
-  runApp(ParkItApp());
+
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Initialize Notifications
+  await initializeNotifications();
+
+  runApp(const ParkItApp());
 }
 
 // Initialize notifications
