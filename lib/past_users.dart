@@ -49,12 +49,6 @@ class PastUsersPage extends StatelessWidget {
               final user = users[index].data() as Map<String, dynamic>?;
               if (user == null) return const SizedBox.shrink();
 
-              final activatedAt =
-                  (user['Activated At'] as Timestamp?)?.toDate() ?? DateTime.now();
-              final deactivatedAt =
-                  (user['Deactivated At'] as Timestamp?)?.toDate() ?? DateTime.now();
-              
-
               return Card(
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 shape: RoundedRectangleBorder(
@@ -77,9 +71,6 @@ class PastUsersPage extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text("Vehicle No: ${user['Vehicle No'] ?? 'N/A'}"),
                       Text("Phone No: ${user['Phone No'] ?? 'N/A'}"),
-                      const SizedBox(height: 8),
-                      Text("Activated At: $activatedAt"),
-                      Text("Deactivated At: $deactivatedAt"),
                       
                     ],
                   ),
