@@ -33,7 +33,7 @@ class ActiveUsersPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
-            debugPrint("Error fetching data: ${snapshot.error}");
+            debugPrint("Error fetching data: \${snapshot.error}");
             return const Center(child: Text('Error fetching data'));
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -65,7 +65,7 @@ class ActiveUsersPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Tag No: ${user['Tag No'] ?? 'N/A'}",
+                        "Tag No: \${user['Tag No'] ?? 'N/A'}",
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -73,14 +73,14 @@ class ActiveUsersPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Text("Vehicle No: ${user['Vehicle No'] ?? 'N/A'}"),
-                      Text("Phone No: ${user['Phone No'] ?? 'N/A'}"),
+                      Text("Vehicle No: \${user['Vehicle No'] ?? 'N/A'}"),
+                      Text("Phone No: \${user['Phone No'] ?? 'N/A'}"),
                       const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Active: ${user['Active'] ?? 'N/A'}",
+                            "Active: \${user['Active'] ?? 'N/A'}",
                             style: TextStyle(
                               color: (user['Active'] == 'Yes')
                                   ? Colors.green
@@ -92,10 +92,6 @@ class ActiveUsersPage extends StatelessWidget {
                             onPressed: () async {
                               try {
                                 final now = DateTime.now();
-                                final activatedAt = (user['ActivatedAt'] as Timestamp?)?.toDate();
-                                final duration = activatedAt != null
-                                    ? now.difference(activatedAt)
-                                    : const Duration();
 
                                 // Add user to `past_users` collection
                                 await FirebaseFirestore.instance
@@ -103,19 +99,17 @@ class ActiveUsersPage extends StatelessWidget {
                                     .doc(userDoc.id)
                                     .set({
                                   ...user,
-                                  'Deactivated At': now,
-                                  'Duration': duration.inSeconds,
+                                  'Active': 'No',
                                 });
 
                                 // Update the original document in `users`
                                 await userDoc.reference.update({
                                   'Active': 'No',
-                                  'Deactivated At': now,
                                 });
 
                                 debugPrint("User deactivated and moved to past_users.");
                               } catch (e) {
-                                debugPrint("Error deactivating user: $e");
+                                debugPrint("Error deactivating user: \$e");
                               }
                             },
                             style: ElevatedButton.styleFrom(
